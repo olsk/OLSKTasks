@@ -119,7 +119,7 @@ exports.ROCOTasksTimeoutForTaskObject = function (inputData) {
 		inputData._ROCOTaskAsyncRunningCount = 0;
 	};
 
-	var callback = function () {
+	var taskParentCallback = function () {
 		if (!inputData.ROCOTaskShouldBePerformed()) {
 			return;
 		};
@@ -130,7 +130,7 @@ exports.ROCOTasksTimeoutForTaskObject = function (inputData) {
 	};
 
 	if (inputData.ROCOTaskShouldFireImmediately === true) {
-		callback();
+		taskParentCallback();
 	};
 
 	var timerID = setInterval(function () {
@@ -143,7 +143,7 @@ exports.ROCOTasksTimeoutForTaskObject = function (inputData) {
 			return exports._ROCOTasksLog(inputData, 'RATE LIMIT');
 		};
 		
-		callback()
+		taskParentCallback()
 	}, inputData.ROCOTaskFireTimeInterval * 1000);
 
 	return timerID;
