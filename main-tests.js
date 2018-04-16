@@ -246,7 +246,7 @@ describe('ROCOTasksTimeoutForTaskObject', function testROCOTasksTimeoutForTaskOb
 		}, 0.05 * 1000);
 	});
 
-	context('ROCOTaskAsyncRateLimit', function() {
+	context('ROCOTaskAsyncRateLimit', function () {
 		
 		it('limits callback fire count to ROCOTaskAsyncRateLimit', function (done) {
 			var taskObject = kConstants.ROCOTestingTaskObjectValid();
