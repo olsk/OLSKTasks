@@ -7,11 +7,11 @@ var kROCOTasksEnableLogging = true;
 
 //_ ROCOTasksInputDataIsDateObject
 
-exports.ROCOTasksInputDataIsDateObject = function (inputData) {
+exports.ROCOTasksInputDataIsDateObject = function(inputData) {
 	if (!(inputData instanceof Date)) {
 		return false;
 	};
-	
+
 	if (Number.isNaN(inputData.getTime())) {
 		return false;
 	};
@@ -21,7 +21,7 @@ exports.ROCOTasksInputDataIsDateObject = function (inputData) {
 
 //_ ROCOTasksInputDataIsTaskObject
 
-exports.ROCOTasksInputDataIsTaskObject = function (inputData) {
+exports.ROCOTasksInputDataIsTaskObject = function(inputData) {
 	if (typeof inputData !== 'object' || inputData === null) {
 		return false;
 	};
@@ -107,7 +107,7 @@ exports.ROCOTasksInputDataIsTaskObject = function (inputData) {
 
 //_ ROCOTasksTimeoutForTaskObject
 
-exports.ROCOTasksTimeoutForTaskObject = function (inputData) {
+exports.ROCOTasksTimeoutForTaskObject = function(inputData) {
 	if (!exports.ROCOTasksInputDataIsTaskObject(inputData)) {
 		throw new Error('ROCOErrorInputInvalid');
 	};
@@ -119,7 +119,7 @@ exports.ROCOTasksTimeoutForTaskObject = function (inputData) {
 		inputData._ROCOTaskAsyncRunningCount = 0;
 	};
 
-	var taskParentCallback = function () {
+	var taskParentCallback = function() {
 		if (!inputData.ROCOTaskShouldBePerformed()) {
 			return;
 		};
@@ -133,7 +133,7 @@ exports.ROCOTasksTimeoutForTaskObject = function (inputData) {
 		taskParentCallback();
 	};
 
-	var timerID = setInterval(function () {
+	var timerID = setInterval(function() {
 		if (inputData._ROCOTaskFireCount >= inputData.ROCOTaskFireLimit) {
 			inputData.ROCOTaskStoppedAt = new Date();
 			return clearInterval(timerID);
@@ -142,7 +142,7 @@ exports.ROCOTasksTimeoutForTaskObject = function (inputData) {
 		if ((inputData.ROCOTaskAsyncRateLimit) && inputData._ROCOTaskAsyncRunningCount >= inputData.ROCOTaskAsyncRateLimit) {
 			return exports._ROCOTasksLog(inputData, 'RATE LIMIT');
 		};
-		
+
 		taskParentCallback()
 	}, inputData.ROCOTaskFireTimeInterval * 1000);
 
@@ -151,7 +151,7 @@ exports.ROCOTasksTimeoutForTaskObject = function (inputData) {
 
 //_ ROCOTasksIncrementAsyncRunningCountForTaskObject
 
-exports.ROCOTasksIncrementAsyncRunningCountForTaskObject = function (inputData) {
+exports.ROCOTasksIncrementAsyncRunningCountForTaskObject = function(inputData) {
 	if (!exports.ROCOTasksInputDataIsTaskObject(inputData)) {
 		throw new Error('ROCOErrorInputInvalid');
 	};
@@ -165,7 +165,7 @@ exports.ROCOTasksIncrementAsyncRunningCountForTaskObject = function (inputData) 
 
 //_ ROCOTasksDecrementAsyncRunningCountForTaskObject
 
-exports.ROCOTasksDecrementAsyncRunningCountForTaskObject = function (inputData) {
+exports.ROCOTasksDecrementAsyncRunningCountForTaskObject = function(inputData) {
 	if (!exports.ROCOTasksInputDataIsTaskObject(inputData)) {
 		throw new Error('ROCOErrorInputInvalid');
 	};
@@ -179,7 +179,7 @@ exports.ROCOTasksDecrementAsyncRunningCountForTaskObject = function (inputData) 
 
 //_ _ROCOTasksLog
 
-exports._ROCOTasksLog = function (taskObject, messages) {
+exports._ROCOTasksLog = function(taskObject, messages) {
 	if (!kROCOTasksEnableLogging) {
 		return;
 	};
@@ -193,8 +193,8 @@ exports._ROCOTasksLog = function (taskObject, messages) {
 	if (runCount > 0) {
 		var pad = '000000';
 		var str = '' + runCount;
-		runCount =  pad.substring(0, pad.length - str.length) + str;
+		runCount = pad.substring(0, pad.length - str.length) + str;
 	};
-	
+
 	console.log(taskObject.ROCOTaskName, runCount, (Array.isArray(messages) ? messages.join(' ') : messages));
 };
