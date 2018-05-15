@@ -8,6 +8,22 @@ var kConstants = require('../kConstants/testing.main').ROCOTestingConstants();
 
 var tasksLibrary = require('./main');
 
+var ROCOTestingTaskObjectValid = function(array) {
+	return {
+		ROCOTaskFireTimeInterval: 0.01,
+		ROCOTaskShouldBePerformed: function() {
+			return true;
+		},
+		ROCOTaskCallback: function() {
+			if (!array) {
+				return;
+			}
+
+			return array.push(new Date());
+		},
+	};
+};
+
 describe('ROCOTasksInputDataIsDateObject', function testROCOTasksInputDataIsDateObject() {
 
 	it('returns false if not date', function() {
@@ -31,95 +47,95 @@ describe('ROCOTasksInputDataIsTaskObject', function testROCOTasksInputDataIsTask
 	});
 
 	it('returns false if ROCOTaskFireTimeInterval not number', function() {
-		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(kConstants.ROCOTestingTaskObjectValid(), {
+		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(ROCOTestingTaskObjectValid(), {
 			ROCOTaskFireTimeInterval: '1',
 		})), false);
 	});
 
 	it('returns false if ROCOTaskShouldBePerformed not function', function() {
-		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(kConstants.ROCOTestingTaskObjectValid(), {
+		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(ROCOTestingTaskObjectValid(), {
 			ROCOTaskShouldBePerformed: true,
 		})), false);
 	});
 
 	it('returns false if ROCOTaskCallback not function', function() {
-		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(kConstants.ROCOTestingTaskObjectValid(), {
+		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(ROCOTestingTaskObjectValid(), {
 			ROCOTaskCallback: true,
 		})), false);
 	});
 
 	it('returns true if valid taskObject', function() {
-		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(kConstants.ROCOTestingTaskObjectValid()), true);
+		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(ROCOTestingTaskObjectValid()), true);
 	});
 
 	it('returns false if ROCOTaskShouldFireImmediately not boolean', function() {
-		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(kConstants.ROCOTestingTaskObjectValid(), {
+		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(ROCOTestingTaskObjectValid(), {
 			ROCOTaskShouldFireImmediately: null,
 		})), false);
 	});
 
 	it('returns false if ROCOTaskFireLimit not number', function() {
-		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(kConstants.ROCOTestingTaskObjectValid(), {
+		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(ROCOTestingTaskObjectValid(), {
 			ROCOTaskFireLimit: '1',
 		})), false);
 	});
 
 	it('returns false if ROCOTaskFireLimit below 0', function() {
-		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(kConstants.ROCOTestingTaskObjectValid(), {
+		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(ROCOTestingTaskObjectValid(), {
 			ROCOTaskFireLimit: -1,
 		})), false);
 	});
 
 	it('returns false if _ROCOTaskFireCount not number', function() {
-		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(kConstants.ROCOTestingTaskObjectValid(), {
+		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(ROCOTestingTaskObjectValid(), {
 			_ROCOTaskFireCount: '1',
 		})), false);
 	});
 
 	it('returns false if _ROCOTaskFireCount below 0', function() {
-		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(kConstants.ROCOTestingTaskObjectValid(), {
+		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(ROCOTestingTaskObjectValid(), {
 			_ROCOTaskFireCount: -1,
 		})), false);
 	});
 
 	it('returns false if ROCOTaskStartedAt not date', function() {
-		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(kConstants.ROCOTestingTaskObjectValid(), {
+		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(ROCOTestingTaskObjectValid(), {
 			ROCOTaskStartedAt: null,
 		})), false);
 	});
 
 	it('returns false if ROCOTaskStoppedAt not date', function() {
-		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(kConstants.ROCOTestingTaskObjectValid(), {
+		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(ROCOTestingTaskObjectValid(), {
 			ROCOTaskStoppedAt: null,
 		})), false);
 	});
 
 	it('returns false if ROCOTaskName not string', function() {
-		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(kConstants.ROCOTestingTaskObjectValid(), {
+		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(ROCOTestingTaskObjectValid(), {
 			ROCOTaskName: null,
 		})), false);
 	});
 
 	it('returns false if ROCOTaskAsyncRateLimit not number', function() {
-		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(kConstants.ROCOTestingTaskObjectValid(), {
+		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(ROCOTestingTaskObjectValid(), {
 			ROCOTaskAsyncRateLimit: '1',
 		})), false);
 	});
 
 	it('returns false if ROCOTaskAsyncRateLimit below 1', function() {
-		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(kConstants.ROCOTestingTaskObjectValid(), {
+		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(ROCOTestingTaskObjectValid(), {
 			ROCOTaskAsyncRateLimit: 0,
 		})), false);
 	});
 
 	it('returns false if _ROCOTaskAsyncRunningCount not number', function() {
-		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(kConstants.ROCOTestingTaskObjectValid(), {
+		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(ROCOTestingTaskObjectValid(), {
 			_ROCOTaskAsyncRunningCount: '1',
 		})), false);
 	});
 
 	it('returns false if _ROCOTaskAsyncRunningCount below 0', function() {
-		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(kConstants.ROCOTestingTaskObjectValid(), {
+		assert.strictEqual(tasksLibrary.ROCOTasksInputDataIsTaskObject(Object.assign(ROCOTestingTaskObjectValid(), {
 			_ROCOTaskAsyncRunningCount: -1,
 		})), false);
 	});
@@ -137,7 +153,7 @@ describe('ROCOTasksTimeoutForTaskObject', function testROCOTasksTimeoutForTaskOb
 	it('fires callback at ROCOTaskFireInterval', function(done) {
 		var data = [];
 
-		var timeout = tasksLibrary.ROCOTasksTimeoutForTaskObject(kConstants.ROCOTestingTaskObjectValid(data));
+		var timeout = tasksLibrary.ROCOTasksTimeoutForTaskObject(ROCOTestingTaskObjectValid(data));
 		setTimeout(function() {
 			clearInterval(timeout);
 
@@ -149,7 +165,7 @@ describe('ROCOTasksTimeoutForTaskObject', function testROCOTasksTimeoutForTaskOb
 	it('fires immediately if ROCOTaskShouldFireImmediately true', function(done) {
 		var data = [];
 
-		var taskObject = kConstants.ROCOTestingTaskObjectValid(data);
+		var taskObject = ROCOTestingTaskObjectValid(data);
 		taskObject.ROCOTaskShouldFireImmediately = true;
 
 		var timeout = tasksLibrary.ROCOTasksTimeoutForTaskObject(taskObject);
@@ -164,7 +180,7 @@ describe('ROCOTasksTimeoutForTaskObject', function testROCOTasksTimeoutForTaskOb
 	it('can be stopped via clearInterval', function(done) {
 		var data = [];
 
-		var timeout = tasksLibrary.ROCOTasksTimeoutForTaskObject(kConstants.ROCOTestingTaskObjectValid(data));
+		var timeout = tasksLibrary.ROCOTasksTimeoutForTaskObject(ROCOTestingTaskObjectValid(data));
 		setTimeout(function() {
 			clearInterval(timeout);
 
@@ -177,7 +193,7 @@ describe('ROCOTasksTimeoutForTaskObject', function testROCOTasksTimeoutForTaskOb
 
 	it('does not fire callback if ROCOTaskShouldBePerformed returns false', function(done) {
 		var data = [];
-		var taskObject = kConstants.ROCOTestingTaskObjectValid(data);
+		var taskObject = ROCOTestingTaskObjectValid(data);
 		taskObject.ROCOTaskShouldBePerformed = function() {
 			return false;
 		};
@@ -193,7 +209,7 @@ describe('ROCOTasksTimeoutForTaskObject', function testROCOTasksTimeoutForTaskOb
 
 	it('limits callback fire count to ROCOTaskFireLimit', function(done) {
 		var data = [];
-		var taskObject = kConstants.ROCOTestingTaskObjectValid(data);
+		var taskObject = ROCOTestingTaskObjectValid(data);
 		taskObject.ROCOTaskFireLimit = 3;
 
 		var timeout = tasksLibrary.ROCOTasksTimeoutForTaskObject(taskObject);
@@ -206,7 +222,7 @@ describe('ROCOTasksTimeoutForTaskObject', function testROCOTasksTimeoutForTaskOb
 	});
 
 	it('increments _ROCOTaskFireCount after each callback fired', function(done) {
-		var taskObject = kConstants.ROCOTestingTaskObjectValid();
+		var taskObject = ROCOTestingTaskObjectValid();
 
 		var timeout = tasksLibrary.ROCOTasksTimeoutForTaskObject(taskObject);
 		setTimeout(function() {
@@ -218,7 +234,7 @@ describe('ROCOTasksTimeoutForTaskObject', function testROCOTasksTimeoutForTaskOb
 	});
 
 	it('sets ROCOTaskStartedAt before firing callback for the first time', function(done) {
-		var taskObject = kConstants.ROCOTestingTaskObjectValid();
+		var taskObject = ROCOTestingTaskObjectValid();
 
 		var timeout = tasksLibrary.ROCOTasksTimeoutForTaskObject(taskObject);
 		var dateObject = new Date();
@@ -231,7 +247,7 @@ describe('ROCOTasksTimeoutForTaskObject', function testROCOTasksTimeoutForTaskOb
 	});
 
 	it('sets ROCOTaskStoppedAt after firing callback for the last time', function(done) {
-		var taskObject = kConstants.ROCOTestingTaskObjectValid();
+		var taskObject = ROCOTestingTaskObjectValid();
 		taskObject.ROCOTaskFireLimit = 3;
 
 		var timeout = tasksLibrary.ROCOTasksTimeoutForTaskObject(taskObject);
@@ -249,7 +265,7 @@ describe('ROCOTasksTimeoutForTaskObject', function testROCOTasksTimeoutForTaskOb
 	context('ROCOTaskAsyncRateLimit', function() {
 
 		it('limits callback fire count to ROCOTaskAsyncRateLimit', function(done) {
-			var taskObject = kConstants.ROCOTestingTaskObjectValid();
+			var taskObject = ROCOTestingTaskObjectValid();
 			taskObject.ROCOTaskAsyncRateLimit = 1;
 			taskObject.ROCOTaskCallback = function() {
 				taskObject._ROCOTaskAsyncRunningCount += 1;
@@ -266,7 +282,7 @@ describe('ROCOTasksTimeoutForTaskObject', function testROCOTasksTimeoutForTaskOb
 		});
 
 		it('starts firing when _ROCOTaskAsyncRunningCount < ROCOTaskAsyncRateLimit', function(done) {
-			var taskObject = kConstants.ROCOTestingTaskObjectValid();
+			var taskObject = ROCOTestingTaskObjectValid();
 			taskObject.ROCOTaskFireLimit = 2;
 			taskObject.ROCOTaskAsyncRateLimit = 1;
 
@@ -302,12 +318,12 @@ describe('ROCOTasksIncrementAsyncRunningCountForTaskObject', function testROCOTa
 
 	it('throws error if without ROCOTaskAsyncRateLimit', function() {
 		assert.throws(function() {
-			tasksLibrary.ROCOTasksIncrementAsyncRunningCountForTaskObject(kConstants.ROCOTestingTaskObjectValid());
+			tasksLibrary.ROCOTasksIncrementAsyncRunningCountForTaskObject(ROCOTestingTaskObjectValid());
 		}, /ROCOErrorInputInvalid/);
 	});
 
 	it('increments _ROCOTaskAsyncRunningCount', function(done) {
-		var taskObject = kConstants.ROCOTestingTaskObjectValid();
+		var taskObject = ROCOTestingTaskObjectValid();
 		taskObject.ROCOTaskAsyncRateLimit = 1;
 
 		taskObject.ROCOTaskCallback = function() {
@@ -336,12 +352,12 @@ describe('ROCOTasksDecrementAsyncRunningCountForTaskObject', function testROCOTa
 
 	it('throws error if without ROCOTaskAsyncRateLimit', function() {
 		assert.throws(function() {
-			tasksLibrary.ROCOTasksDecrementAsyncRunningCountForTaskObject(kConstants.ROCOTestingTaskObjectValid());
+			tasksLibrary.ROCOTasksDecrementAsyncRunningCountForTaskObject(ROCOTestingTaskObjectValid());
 		}, /ROCOErrorInputInvalid/);
 	});
 
 	it('decrements _ROCOTaskAsyncRunningCount', function(done) {
-		var taskObject = kConstants.ROCOTestingTaskObjectValid();
+		var taskObject = ROCOTestingTaskObjectValid();
 		taskObject.ROCOTaskFireLimit = 2;
 		taskObject.ROCOTaskAsyncRateLimit = 1;
 
