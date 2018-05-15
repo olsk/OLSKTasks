@@ -4,7 +4,6 @@
  */
 
 var assert = require('assert');
-var kConstants = require('../kConstants/testing.main').ROCOTestingConstants();
 
 var tasksLibrary = require('./main');
 
