@@ -4,11 +4,11 @@
  * MIT Licensed
  */
 
-var kROCOTasksEnableLogging = true;
+var kOLSKTasksEnableLogging = true;
 
-//_ ROCOTasksInputDataIsDateObject
+//_ OLSKTasksInputDataIsDateObject
 
-exports.ROCOTasksInputDataIsDateObject = function(inputData) {
+exports.OLSKTasksInputDataIsDateObject = function(inputData) {
 	if (!(inputData instanceof Date)) {
 		return false;
 	}
@@ -20,85 +20,85 @@ exports.ROCOTasksInputDataIsDateObject = function(inputData) {
 	return true;
 };
 
-//_ ROCOTasksInputDataIsTaskObject
+//_ OLSKTasksInputDataIsTaskObject
 
-exports.ROCOTasksInputDataIsTaskObject = function(inputData) {
+exports.OLSKTasksInputDataIsTaskObject = function(inputData) {
 	if (typeof inputData !== 'object' || inputData === null) {
 		return false;
 	}
 
-	if (typeof inputData.ROCOTaskFireTimeInterval !== 'number') {
+	if (typeof inputData.OLSKTaskFireTimeInterval !== 'number') {
 		return false;
 	}
 
-	if (typeof inputData.ROCOTaskShouldBePerformed !== 'function') {
+	if (typeof inputData.OLSKTaskShouldBePerformed !== 'function') {
 		return false;
 	}
 
-	if (typeof inputData.ROCOTaskCallback !== 'function') {
+	if (typeof inputData.OLSKTaskCallback !== 'function') {
 		return false;
 	}
 
-	if (inputData.ROCOTaskShouldFireImmediately !== undefined) {
-		if (typeof inputData.ROCOTaskShouldFireImmediately !== 'boolean') {
+	if (inputData.OLSKTaskShouldFireImmediately !== undefined) {
+		if (typeof inputData.OLSKTaskShouldFireImmediately !== 'boolean') {
 			return false;
 		}
 	}
 
-	if (inputData.ROCOTaskFireLimit !== undefined) {
-		if (typeof inputData.ROCOTaskFireLimit !== 'number') {
+	if (inputData.OLSKTaskFireLimit !== undefined) {
+		if (typeof inputData.OLSKTaskFireLimit !== 'number') {
 			return false;
 		}
 
-		if (inputData.ROCOTaskFireLimit < 0) {
-			return false;
-		}
-	}
-
-	if (inputData._ROCOTaskFireCount !== undefined) {
-		if (typeof inputData._ROCOTaskFireCount !== 'number') {
-			return false;
-		}
-
-		if (inputData._ROCOTaskFireCount < 0) {
+		if (inputData.OLSKTaskFireLimit < 0) {
 			return false;
 		}
 	}
 
-	if (inputData.ROCOTaskStartedAt !== undefined) {
-		if (!exports.ROCOTasksInputDataIsDateObject(inputData.ROCOTaskStartedAt)) {
+	if (inputData._OLSKTaskFireCount !== undefined) {
+		if (typeof inputData._OLSKTaskFireCount !== 'number') {
+			return false;
+		}
+
+		if (inputData._OLSKTaskFireCount < 0) {
 			return false;
 		}
 	}
 
-	if (inputData.ROCOTaskStoppedAt !== undefined) {
-		if (!exports.ROCOTasksInputDataIsDateObject(inputData.ROCOTaskStoppedAt)) {
+	if (inputData.OLSKTaskStartedAt !== undefined) {
+		if (!exports.OLSKTasksInputDataIsDateObject(inputData.OLSKTaskStartedAt)) {
 			return false;
 		}
 	}
 
-	if (inputData.ROCOTaskName !== undefined) {
-		if (typeof inputData.ROCOTaskName !== 'string') {
+	if (inputData.OLSKTaskStoppedAt !== undefined) {
+		if (!exports.OLSKTasksInputDataIsDateObject(inputData.OLSKTaskStoppedAt)) {
 			return false;
 		}
 	}
 
-	if (inputData.ROCOTaskAsyncRateLimit !== undefined) {
-		if (typeof inputData.ROCOTaskAsyncRateLimit !== 'number') {
-			return false;
-		}
-
-		if (inputData.ROCOTaskAsyncRateLimit < 1) {
+	if (inputData.OLSKTaskName !== undefined) {
+		if (typeof inputData.OLSKTaskName !== 'string') {
 			return false;
 		}
 	}
 
-	if (inputData._ROCOTaskAsyncRunningCount !== undefined) {
-		if (typeof inputData._ROCOTaskAsyncRunningCount !== 'number') {
+	if (inputData.OLSKTaskAsyncRateLimit !== undefined) {
+		if (typeof inputData.OLSKTaskAsyncRateLimit !== 'number') {
 			return false;
 		}
 
-		if (inputData._ROCOTaskAsyncRunningCount < 0) {
+		if (inputData.OLSKTaskAsyncRateLimit < 1) {
+			return false;
+		}
+	}
+
+	if (inputData._OLSKTaskAsyncRunningCount !== undefined) {
+		if (typeof inputData._OLSKTaskAsyncRunningCount !== 'number') {
+			return false;
+		}
+
+		if (inputData._OLSKTaskAsyncRunningCount < 0) {
 			return false;
 		}
 	}
@@ -106,90 +106,90 @@ exports.ROCOTasksInputDataIsTaskObject = function(inputData) {
 	return true;
 };
 
-//_ ROCOTasksTimeoutForTaskObject
+//_ OLSKTasksTimeoutForTaskObject
 
-exports.ROCOTasksTimeoutForTaskObject = function(inputData) {
-	if (!exports.ROCOTasksInputDataIsTaskObject(inputData)) {
-		throw new Error('ROCOErrorInputInvalid');
+exports.OLSKTasksTimeoutForTaskObject = function(inputData) {
+	if (!exports.OLSKTasksInputDataIsTaskObject(inputData)) {
+		throw new Error('OLSKErrorInputInvalid');
 	}
 
-	inputData._ROCOTaskFireCount = 0;
-	inputData.ROCOTaskStartedAt = new Date();
+	inputData._OLSKTaskFireCount = 0;
+	inputData.OLSKTaskStartedAt = new Date();
 
-	if (inputData.ROCOTaskAsyncRateLimit) {
-		inputData._ROCOTaskAsyncRunningCount = 0;
+	if (inputData.OLSKTaskAsyncRateLimit) {
+		inputData._OLSKTaskAsyncRunningCount = 0;
 	}
 
 	var taskParentCallback = function() {
-		if (!inputData.ROCOTaskShouldBePerformed()) {
+		if (!inputData.OLSKTaskShouldBePerformed()) {
 			return;
 		}
 
-		inputData._ROCOTaskFireCount++;
+		inputData._OLSKTaskFireCount++;
 
-		inputData.ROCOTaskCallback();
+		inputData.OLSKTaskCallback();
 	};
 
-	if (inputData.ROCOTaskShouldFireImmediately === true) {
+	if (inputData.OLSKTaskShouldFireImmediately === true) {
 		taskParentCallback();
 	}
 
 	var timerID = setInterval(function() {
-		if (inputData._ROCOTaskFireCount >= inputData.ROCOTaskFireLimit) {
-			inputData.ROCOTaskStoppedAt = new Date();
+		if (inputData._OLSKTaskFireCount >= inputData.OLSKTaskFireLimit) {
+			inputData.OLSKTaskStoppedAt = new Date();
 			return clearInterval(timerID);
 		}
 
-		if ((inputData.ROCOTaskAsyncRateLimit) && inputData._ROCOTaskAsyncRunningCount >= inputData.ROCOTaskAsyncRateLimit) {
-			return exports._ROCOTasksLog(inputData, 'RATE LIMIT');
+		if ((inputData.OLSKTaskAsyncRateLimit) && inputData._OLSKTaskAsyncRunningCount >= inputData.OLSKTaskAsyncRateLimit) {
+			return exports._OLSKTasksLog(inputData, 'RATE LIMIT');
 		}
 
 		taskParentCallback();
-	}, inputData.ROCOTaskFireTimeInterval * 1000);
+	}, inputData.OLSKTaskFireTimeInterval * 1000);
 
 	return timerID;
 };
 
-//_ ROCOTasksIncrementAsyncRunningCountForTaskObject
+//_ OLSKTasksIncrementAsyncRunningCountForTaskObject
 
-exports.ROCOTasksIncrementAsyncRunningCountForTaskObject = function(inputData) {
-	if (!exports.ROCOTasksInputDataIsTaskObject(inputData)) {
-		throw new Error('ROCOErrorInputInvalid');
+exports.OLSKTasksIncrementAsyncRunningCountForTaskObject = function(inputData) {
+	if (!exports.OLSKTasksInputDataIsTaskObject(inputData)) {
+		throw new Error('OLSKErrorInputInvalid');
 	}
 
-	if (!inputData.ROCOTaskAsyncRateLimit) {
-		throw new Error('ROCOErrorInputInvalid');
+	if (!inputData.OLSKTaskAsyncRateLimit) {
+		throw new Error('OLSKErrorInputInvalid');
 	}
 
-	inputData._ROCOTaskAsyncRunningCount += 1;
+	inputData._OLSKTaskAsyncRunningCount += 1;
 };
 
-//_ ROCOTasksDecrementAsyncRunningCountForTaskObject
+//_ OLSKTasksDecrementAsyncRunningCountForTaskObject
 
-exports.ROCOTasksDecrementAsyncRunningCountForTaskObject = function(inputData) {
-	if (!exports.ROCOTasksInputDataIsTaskObject(inputData)) {
-		throw new Error('ROCOErrorInputInvalid');
+exports.OLSKTasksDecrementAsyncRunningCountForTaskObject = function(inputData) {
+	if (!exports.OLSKTasksInputDataIsTaskObject(inputData)) {
+		throw new Error('OLSKErrorInputInvalid');
 	}
 
-	if (!inputData.ROCOTaskAsyncRateLimit) {
-		throw new Error('ROCOErrorInputInvalid');
+	if (!inputData.OLSKTaskAsyncRateLimit) {
+		throw new Error('OLSKErrorInputInvalid');
 	}
 
-	inputData._ROCOTaskAsyncRunningCount -= 1;
+	inputData._OLSKTaskAsyncRunningCount -= 1;
 };
 
-//_ _ROCOTasksLog
+//_ _OLSKTasksLog
 
-exports._ROCOTasksLog = function(taskObject, messages) {
-	if (!kROCOTasksEnableLogging) {
+exports._OLSKTasksLog = function(taskObject, messages) {
+	if (!kOLSKTasksEnableLogging) {
 		return;
 	}
 
-	if (!taskObject.ROCOTaskEnableLogging) {
+	if (!taskObject.OLSKTaskEnableLogging) {
 		return;
 	}
 
-	var runCount = taskObject._ROCOTaskFireCount;
+	var runCount = taskObject._OLSKTaskFireCount;
 
 	if (runCount > 0) {
 		var pad = '000000';
@@ -197,5 +197,5 @@ exports._ROCOTasksLog = function(taskObject, messages) {
 		runCount = pad.substring(0, pad.length - str.length) + str;
 	}
 
-	console.log(taskObject.ROCOTaskName, runCount, (Array.isArray(messages) ? messages.join(' ') : messages));
+	console.log(taskObject.OLSKTaskName, runCount, (Array.isArray(messages) ? messages.join(' ') : messages));
 };
