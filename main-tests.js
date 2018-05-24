@@ -153,9 +153,9 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 	it('fires callback at OLSKTaskFireInterval', function(done) {
 		var data = [];
 
-		var timeout = tasksLibrary.OLSKTasksTimeoutForTaskObject(OLSKTestingTaskObjectValid(data));
+		var timerID = tasksLibrary.OLSKTasksTimeoutForTaskObject(OLSKTestingTaskObjectValid(data));
 		setTimeout(function() {
-			clearInterval(timeout);
+			clearInterval(timerID);
 
 			assert.strictEqual(data.length, 2);
 			done();
@@ -168,9 +168,9 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 		var taskObject = OLSKTestingTaskObjectValid(data);
 		taskObject.OLSKTaskShouldFireImmediately = true;
 
-		var timeout = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
+		var timerID = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
 		setTimeout(function() {
-			clearInterval(timeout);
+			clearInterval(timerID);
 
 			assert.strictEqual(data.length, 3);
 			done();
@@ -180,9 +180,9 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 	it('can be stopped via clearInterval', function(done) {
 		var data = [];
 
-		var timeout = tasksLibrary.OLSKTasksTimeoutForTaskObject(OLSKTestingTaskObjectValid(data));
+		var timerID = tasksLibrary.OLSKTasksTimeoutForTaskObject(OLSKTestingTaskObjectValid(data));
 		setTimeout(function() {
-			clearInterval(timeout);
+			clearInterval(timerID);
 
 			setTimeout(function() {
 				assert.strictEqual(data.length, 1);
@@ -198,9 +198,9 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 			return false;
 		};
 
-		var timeout = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
+		var timerID = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
 		setTimeout(function() {
-			clearInterval(timeout);
+			clearInterval(timerID);
 
 			assert.strictEqual(data.length, 0);
 			done();
@@ -212,9 +212,9 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 		var taskObject = OLSKTestingTaskObjectValid(data);
 		taskObject.OLSKTaskFireLimit = 3;
 
-		var timeout = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
+		var timerID = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
 		setTimeout(function() {
-			clearInterval(timeout);
+			clearInterval(timerID);
 
 			assert.strictEqual(data.length, 3);
 			done();
@@ -224,9 +224,9 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 	it('increments _OLSKTaskFireCount after each callback fired', function(done) {
 		var taskObject = OLSKTestingTaskObjectValid();
 
-		var timeout = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
+		var timerID = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
 		setTimeout(function() {
-			clearInterval(timeout);
+			clearInterval(timerID);
 
 			assert.strictEqual(taskObject._OLSKTaskFireCount, 4);
 			done();
@@ -236,10 +236,10 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 	it('sets OLSKTaskStartedAt before firing callback for the first time', function(done) {
 		var taskObject = OLSKTestingTaskObjectValid();
 
-		var timeout = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
+		var timerID = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
 		var dateObject = new Date();
 		setTimeout(function() {
-			clearInterval(timeout);
+			clearInterval(timerID);
 
 			assert.strictEqual(taskObject.OLSKTaskStartedAt.valueOf(), dateObject.valueOf());
 			done();
@@ -250,10 +250,10 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 		var taskObject = OLSKTestingTaskObjectValid();
 		taskObject.OLSKTaskFireLimit = 3;
 
-		var timeout = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
+		var timerID = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
 
 		setTimeout(function() {
-			clearInterval(timeout);
+			clearInterval(timerID);
 
 			var dateObject = new Date();
 			var diff = dateObject.valueOf() - taskObject.OLSKTaskStoppedAt.valueOf();
@@ -271,9 +271,9 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 				taskObject._OLSKTaskAsyncRunningCount += 1;
 			};
 
-			var timeout = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
+			var timerID = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
 			setTimeout(function() {
-				clearInterval(timeout);
+				clearInterval(timerID);
 
 				assert.strictEqual(taskObject._OLSKTaskFireCount, 1);
 				assert.strictEqual(taskObject._OLSKTaskAsyncRunningCount, 1);
@@ -294,9 +294,9 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 				}, 0.01);
 			};
 
-			var timeout = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
+			var timerID = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
 			setTimeout(function() {
-				clearInterval(timeout);
+				clearInterval(timerID);
 
 				assert.strictEqual(taskObject._OLSKTaskFireCount, 2);
 				assert.strictEqual(taskObject._OLSKTaskAsyncRunningCount, 0);
@@ -332,9 +332,9 @@ describe('OLSKTasksIncrementAsyncRunningCountForTaskObject', function testOLSKTa
 			tasksLibrary.OLSKTasksIncrementAsyncRunningCountForTaskObject(taskObject);
 		};
 
-		var timeout = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
+		var timerID = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
 		setTimeout(function() {
-			clearInterval(timeout);
+			clearInterval(timerID);
 
 			assert.strictEqual(taskObject._OLSKTaskAsyncRunningCount, 1);
 			done();
@@ -373,9 +373,9 @@ describe('OLSKTasksDecrementAsyncRunningCountForTaskObject', function testOLSKTa
 			}, 0.001 * 1000);
 		};
 
-		var timeout = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
+		var timerID = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
 		setTimeout(function() {
-			clearInterval(timeout);
+			clearInterval(timerID);
 
 			assert.strictEqual(taskObject._OLSKTaskAsyncRunningCount, 0);
 			assert.strictEqual(taskObject._OLSKTaskFireCount, 2);
