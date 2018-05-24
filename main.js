@@ -140,10 +140,10 @@
 			taskParentCallback();
 		}
 
-		var timerID = setInterval(function() {
+		inputData._OLSKTaskTimerID = setInterval(function() {
 			if (inputData._OLSKTaskFireCount >= inputData.OLSKTaskFireLimit) {
 				inputData.OLSKTaskStoppedAt = new Date();
-				return clearInterval(timerID);
+				return clearInterval(inputData._OLSKTaskTimerID);
 			}
 
 			if ((inputData.OLSKTaskAsyncRateLimit) && inputData._OLSKTaskAsyncRunningCount >= inputData.OLSKTaskAsyncRateLimit) {
@@ -153,7 +153,7 @@
 			taskParentCallback();
 		}, inputData.OLSKTaskFireTimeInterval * 1000);
 
-		return timerID;
+		return inputData._OLSKTaskTimerID;
 	};
 
 	//_ OLSKTasksIncrementAsyncRunningCountForTaskObject

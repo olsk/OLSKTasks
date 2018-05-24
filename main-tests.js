@@ -191,6 +191,12 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 		}, 0.015 * 1000);
 	});
 
+	it('sets _OLSKTaskTimerID to timerID', function() {
+		var taskObject = OLSKTestingTaskObjectValid();
+		var timerID = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
+		assert.deepEqual(timerID, taskObject._OLSKTaskTimerID);
+	});
+
 	it('does not fire callback if OLSKTaskShouldBePerformed returns false', function(done) {
 		var data = [];
 		var taskObject = OLSKTestingTaskObjectValid(data);
