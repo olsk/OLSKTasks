@@ -89,26 +89,6 @@
 			}
 		}
 
-		if (inputData.OLSKTaskAsyncRateLimit !== undefined) {
-			if (typeof inputData.OLSKTaskAsyncRateLimit !== 'number') {
-				return false;
-			}
-
-			if (inputData.OLSKTaskAsyncRateLimit < 1) {
-				return false;
-			}
-		}
-
-		if (inputData._OLSKTaskAsyncRunningCount !== undefined) {
-			if (typeof inputData._OLSKTaskAsyncRunningCount !== 'number') {
-				return false;
-			}
-
-			if (inputData._OLSKTaskAsyncRunningCount < 0) {
-				return false;
-			}
-		}
-
 		return true;
 	};
 
@@ -121,10 +101,6 @@
 
 		inputData._OLSKTaskFireCount = 0;
 		inputData.OLSKTaskStartedAt = new Date();
-
-		if (inputData.OLSKTaskAsyncRateLimit) {
-			inputData._OLSKTaskAsyncRunningCount = 0;
-		}
 
 		var taskParentCallback = function() {
 			if (!inputData.OLSKTaskShouldBePerformed()) {
@@ -146,64 +122,10 @@
 				return clearInterval(inputData._OLSKTaskTimerID);
 			}
 
-			if ((inputData.OLSKTaskAsyncRateLimit) && inputData._OLSKTaskAsyncRunningCount >= inputData.OLSKTaskAsyncRateLimit) {
-				return exports._OLSKTasksLog(inputData, 'RATE LIMIT');
-			}
-
 			taskParentCallback();
 		}, inputData.OLSKTaskFireTimeInterval * 1000);
 
 		return inputData._OLSKTaskTimerID;
-	};
-
-	//_ OLSKTasksIncrementAsyncRunningCountForTaskObject
-
-	exports.OLSKTasksIncrementAsyncRunningCountForTaskObject = function(inputData) {
-		if (!exports.OLSKTasksInputDataIsTaskObject(inputData)) {
-			throw new Error('OLSKErrorInputInvalid');
-		}
-
-		if (!inputData.OLSKTaskAsyncRateLimit) {
-			throw new Error('OLSKErrorInputInvalid');
-		}
-
-		inputData._OLSKTaskAsyncRunningCount += 1;
-	};
-
-	//_ OLSKTasksDecrementAsyncRunningCountForTaskObject
-
-	exports.OLSKTasksDecrementAsyncRunningCountForTaskObject = function(inputData) {
-		if (!exports.OLSKTasksInputDataIsTaskObject(inputData)) {
-			throw new Error('OLSKErrorInputInvalid');
-		}
-
-		if (!inputData.OLSKTaskAsyncRateLimit) {
-			throw new Error('OLSKErrorInputInvalid');
-		}
-
-		inputData._OLSKTaskAsyncRunningCount -= 1;
-	};
-
-	//_ _OLSKTasksLog
-
-	exports._OLSKTasksLog = function(taskObject, messages) {
-		if (!kOLSKTasksEnableLogging) {
-			return;
-		}
-
-		if (!taskObject.OLSKTaskEnableLogging) {
-			return;
-		}
-
-		var runCount = taskObject._OLSKTaskFireCount;
-
-		if (runCount > 0) {
-			var pad = '000000';
-			var str = '' + runCount;
-			runCount = pad.substring(0, pad.length - str.length) + str;
-		}
-
-		console.log(taskObject.OLSKTaskName, runCount, (Array.isArray(messages) ? messages.join(' ') : messages));
 	};
 
 	Object.defineProperty(exports, '__esModule', { value: true });
