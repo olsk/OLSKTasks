@@ -312,7 +312,9 @@ describe('OLSKTasksIncrementAsyncRunningCountForTaskObject', function testOLSKTa
 
 	it('throws error if param1 not taskObject', function() {
 		assert.throws(function() {
-			tasksLibrary.OLSKTasksIncrementAsyncRunningCountForTaskObject({});
+			tasksLibrary.OLSKTasksIncrementAsyncRunningCountForTaskObject({
+				OLSKTaskAsyncRateLimit: 1,
+			});
 		}, /OLSKErrorInputInvalid/);
 	});
 
@@ -346,7 +348,9 @@ describe('OLSKTasksDecrementAsyncRunningCountForTaskObject', function testOLSKTa
 
 	it('throws error if param1 not taskObject', function() {
 		assert.throws(function() {
-			tasksLibrary.OLSKTasksDecrementAsyncRunningCountForTaskObject({});
+			tasksLibrary.OLSKTasksDecrementAsyncRunningCountForTaskObject({
+				OLSKTaskAsyncRateLimit: 1,
+			});
 		}, /OLSKErrorInputInvalid/);
 	});
 
