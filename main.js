@@ -51,6 +51,16 @@
 			}
 		}
 
+		if (inputData.OLSKTaskFireDates !== undefined) {
+			if (!Array.isArray(inputData.OLSKTaskFireDates)) {
+				return false;
+			}
+
+			if (!inputData.OLSKTaskFireDates.filter(exports.OLSKTasksInputDataIsDateObject).length) {
+				return false;
+			}
+		}
+
 		if (inputData.OLSKTaskFireLimit !== undefined) {
 			if (typeof inputData.OLSKTaskFireLimit !== 'number') {
 				return false;

@@ -101,6 +101,28 @@ describe('OLSKTasksInputDataIsTaskObject', function testOLSKTasksInputDataIsTask
 
 	});
 
+	context('OLSKTaskFireDates', function() {
+
+		it('returns false if not array', function() {
+			assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
+				OLSKTaskFireDates: null,
+			})), false);
+		});
+
+		it('returns false if array without dates', function() {
+			assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
+				OLSKTaskFireDates: [null],
+			})), false);
+		});
+
+		it('returns true', function() {
+			assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
+				OLSKTaskFireDates: [new Date()],
+			})), true);
+		});
+
+	});
+
 	context('_OLSKTaskFireCount', function() {
 
 		it('returns false if not number', function() {
