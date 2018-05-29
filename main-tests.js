@@ -405,7 +405,7 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 				assert.strictEqual(datesEqualWithinThreshold(item.OLSKTaskStoppedAt, new Date(), 15), true);
 
 				done();
-			}, delayForFireCount(4.1));
+			}, delayForFireCount(4.2));
 		});
 
 	});
