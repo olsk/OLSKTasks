@@ -205,7 +205,7 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 
 	it('fires callback at OLSKTaskFireInterval', function(done) {
 		var item = taskObjectValid();
-		
+
 		tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
 
 		setTimeout(function() {
@@ -267,7 +267,7 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 	context('OLSKTaskFiresImmediately', function() {
 
 		it('fires immediately if true', function(done) {
-				var item = Object.assign(taskObjectValid(), {
+			var item = Object.assign(taskObjectValid(), {
 				OLSKTaskFiresImmediately: true,
 			});
 
@@ -287,7 +287,7 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 	context('OLSKTaskFireLimit', function() {
 
 		it('limits callback fire count', function(done) {
-				var item = Object.assign(taskObjectValid(), {
+			var item = Object.assign(taskObjectValid(), {
 				OLSKTaskFireLimit: 3,
 			});
 
@@ -344,7 +344,7 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 					new Date((new Date()).valueOf() + delayForFireCount(3))
 				],
 			});
-			
+
 			tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
 
 			setTimeout(function() {
@@ -399,7 +399,7 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 				],
 			});
 
-			tasksLibrary.OLSKTasksTimeoutForTaskObject(item)
+			tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
 
 			setTimeout(function() {
 				assert.strictEqual(datesEqualWithinThreshold(item.OLSKTaskStoppedAt, new Date(), 15), true);

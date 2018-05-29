@@ -4,11 +4,12 @@
  * MIT Licensed
  */
 
-(function (global, factory) {
+(function(global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.OLSKTasks = global.OLSKTasks || {})));
-}(this, (function (exports) { 'use strict';
+		typeof define === 'function' && define.amd ? define(['exports'], factory) :
+			(factory((global.OLSKTasks = global.OLSKTasks || {})));
+}(this, (function(exports) {
+	'use strict';
 
 	var kOLSKTasksEnableLogging = true;
 
@@ -160,6 +161,8 @@
 		return inputData._OLSKTaskTimerID;
 	};
 
-	Object.defineProperty(exports, '__esModule', { value: true });
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
 
 })));
