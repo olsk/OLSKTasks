@@ -126,6 +126,28 @@
 			taskParentCallback();
 		}
 
+		if (inputData.OLSKTaskFireDates) {
+			inputData._OLSKTaskFireDates = inputData.OLSKTaskFireDates.slice(0);
+
+			var timeOutCallback = function() {
+				if (!inputData._OLSKTaskFireDates.length) {
+					inputData.OLSKTaskStoppedAt = new Date();
+
+					return;
+				}
+
+				inputData._OLSKTaskTimerID = setTimeout(function() {
+					taskParentCallback();
+
+					timeOutCallback();
+				}, inputData._OLSKTaskFireDates.shift() - new Date());
+
+				return inputData._OLSKTaskTimerID;
+			};
+
+			return timeOutCallback();
+		}
+
 		inputData._OLSKTaskTimerID = setInterval(function() {
 			if (inputData._OLSKTaskFireCount >= inputData.OLSKTaskFireLimit) {
 				inputData.OLSKTaskStoppedAt = new Date();
