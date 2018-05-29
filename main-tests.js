@@ -9,20 +9,19 @@ var assert = require('assert');
 var tasksLibrary = require('./main');
 
 var kDefaultTimeInterval = 0.01;
-var taskObjectValid = function(array) {
-	return {
+var taskObjectValid = function() {
+	var item = {
 		OLSKTaskFireTimeInterval: kDefaultTimeInterval,
 		OLSKTaskShouldBePerformed: function() {
 			return true;
 		},
+		_OLSKTestingData: [],
 		OLSKTaskCallback: function() {
-			if (!array) {
-				return;
-			}
-
-			return array.push(new Date());
+			return item._OLSKTestingData.push(new Date());
 		},
 	};
+
+	return item;
 };
 var delayForFireCount = function(inputData) {
 	return 1000 * (kDefaultTimeInterval * inputData);
@@ -184,20 +183,20 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 	});
 
 	it('sets _OLSKTaskTimerID to timerID', function() {
-		var taskObject = taskObjectValid();
-		assert.deepEqual(tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject), taskObject._OLSKTaskTimerID);
+		var item = taskObjectValid();
+		assert.deepEqual(tasksLibrary.OLSKTasksTimeoutForTaskObject(item), item._OLSKTaskTimerID);
 	});
 
 	it('can be stopped via clearInterval', function(done) {
-		var data = [];
+		var item = taskObjectValid();
 
-		var timerID = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObjectValid(data));
+		tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
 
 		setTimeout(function() {
-			clearInterval(timerID);
+			clearInterval(item._OLSKTaskTimerID);
 
 			setTimeout(function() {
-				assert.strictEqual(data.length, 1);
+				assert.strictEqual(item._OLSKTestingData.length, 1);
 
 				done();
 			}, delayForFireCount(1.5));
@@ -205,63 +204,61 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 	});
 
 	it('fires callback at OLSKTaskFireInterval', function(done) {
-		var data = [];
-
-		var timerID = tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObjectValid(data));
+		var item = taskObjectValid();
+		
+		tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
 
 		setTimeout(function() {
-			clearInterval(timerID);
+			clearInterval(item._OLSKTaskTimerID);
 
-			assert.strictEqual(data.length, 2);
+			assert.strictEqual(item._OLSKTestingData.length, 2);
 
 			done();
 		}, delayForFireCount(2.5));
 	});
 
 	it('does not fire callback if OLSKTaskShouldBePerformed returns false', function(done) {
-		var data = [];
-
-		var taskObject = Object.assign(taskObjectValid(data), {
+		var item = Object.assign(taskObjectValid(), {
 			OLSKTaskShouldBePerformed: function() {
 				return false;
 			},
 		});
 
-		tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
+		tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
 
 		setTimeout(function() {
-			clearInterval(taskObject._OLSKTaskTimerID);
+			clearInterval(item._OLSKTaskTimerID);
 
-			assert.strictEqual(data.length, 0);
+			assert.strictEqual(item._OLSKTestingData.length, 0);
 
 			done();
 		}, delayForFireCount(2.5));
 	});
 
 	it('increments _OLSKTaskFireCount after each callback fired', function(done) {
-		var taskObject = taskObjectValid();
+		var item = taskObjectValid();
 
-		tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
+		tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
 
 		setTimeout(function() {
-			clearInterval(taskObject._OLSKTaskTimerID);
+			clearInterval(item._OLSKTaskTimerID);
 
-			assert.strictEqual(taskObject._OLSKTaskFireCount, 4);
+			assert.strictEqual(item._OLSKTaskFireCount, 4);
 
 			done();
 		}, delayForFireCount(4.7));
 	});
 
 	it('sets OLSKTaskStartedAt before firing callback for the first time', function(done) {
-		var taskObject = taskObjectValid();
+		var item = taskObjectValid();
 
 		var startDate = new Date();
-		tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
+		tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
 
 		setTimeout(function() {
-			clearInterval(taskObject._OLSKTaskTimerID);
+			clearInterval(item._OLSKTaskTimerID);
 
-			assert.strictEqual(datesEqualWithinThreshold(taskObject.OLSKTaskStartedAt, startDate, 15), true);
+			assert.strictEqual(datesEqualWithinThreshold(item.OLSKTaskStartedAt, startDate, 15), true);
 
 			done();
 		}, delayForFireCount(4.5));
@@ -270,18 +267,16 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 	context('OLSKTaskFiresImmediately', function() {
 
 		it('fires immediately if true', function(done) {
-			var data = [];
-
-			var taskObject = Object.assign(taskObjectValid(data), {
+				var item = Object.assign(taskObjectValid(), {
 				OLSKTaskFiresImmediately: true,
 			});
 
-			tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
+			tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
 
 			setTimeout(function() {
-				clearInterval(taskObject._OLSKTaskTimerID);
+				clearInterval(item._OLSKTaskTimerID);
 
-				assert.strictEqual(data.length, 3);
+				assert.strictEqual(item._OLSKTestingData.length, 3);
 
 				done();
 			}, delayForFireCount(2.5));
@@ -292,34 +287,32 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 	context('OLSKTaskFireLimit', function() {
 
 		it('limits callback fire count', function(done) {
-			var data = [];
-
-			var taskObject = Object.assign(taskObjectValid(data), {
+				var item = Object.assign(taskObjectValid(), {
 				OLSKTaskFireLimit: 3,
 			});
 
-			tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
+			tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
 
 			setTimeout(function() {
-				clearInterval(taskObject._OLSKTaskTimerID);
+				clearInterval(item._OLSKTaskTimerID);
 
-				assert.strictEqual(data.length, 3);
+				assert.strictEqual(item._OLSKTestingData.length, 3);
 
 				done();
 			}, delayForFireCount(4.5));
 		});
 
 		it('sets OLSKTaskStoppedAt after firing callback for the last time', function(done) {
-			var taskObject = Object.assign(taskObjectValid(), {
+			var item = Object.assign(taskObjectValid(), {
 				OLSKTaskFireLimit: 3,
 			});
 
-			tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);
+			tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
 
 			setTimeout(function() {
-				clearInterval(taskObject._OLSKTaskTimerID);
+				clearInterval(item._OLSKTaskTimerID);
 
-				assert.strictEqual(datesEqualWithinThreshold(taskObject.OLSKTaskStoppedAt, new Date(), 15), true);
+				assert.strictEqual(datesEqualWithinThreshold(item.OLSKTaskStoppedAt, new Date(), 15), true);
 
 				done();
 			}, delayForFireCount(5));
@@ -330,51 +323,51 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 	context('OLSKTaskFireDates', function() {
 
 		it('does not fire callback at OLSKTaskFireInterval', function(done) {
-			var data = [];
-
-			tasksLibrary.OLSKTasksTimeoutForTaskObject(Object.assign(taskObjectValid(data), {
+			var item = Object.assign(taskObjectValid(), {
 				OLSKTaskFireDates: [
 					new Date((new Date()).valueOf() + delayForFireCount(3))
 				],
-			}));
+			});
+
+			tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
 
 			setTimeout(function() {
-				assert.strictEqual(data.length, 0);
+				assert.strictEqual(item._OLSKTestingData.length, 0);
 
 				done();
 			}, delayForFireCount(2.5));
 		});
 
 		it('fires callback at first fire date', function(done) {
-			var data = [];
-
-			tasksLibrary.OLSKTasksTimeoutForTaskObject(Object.assign(taskObjectValid(data), {
+			var item = Object.assign(taskObjectValid(), {
 				OLSKTaskFireDates: [
 					new Date((new Date()).valueOf() + delayForFireCount(3))
 				],
-			}));
+			});
+			
+			tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
 
 			setTimeout(function() {
-				assert.strictEqual(data.length, 1);
+				assert.strictEqual(item._OLSKTestingData.length, 1);
 
 				done();
 			}, delayForFireCount(3.5));
 		});
 
 		it('can be stopped via clearTimeout', function(done) {
-			var data = [];
-
-			var timerID = tasksLibrary.OLSKTasksTimeoutForTaskObject(Object.assign(taskObjectValid(data), {
+			var item = Object.assign(taskObjectValid(), {
 				OLSKTaskFireDates: [
 					new Date((new Date()).valueOf() + delayForFireCount(2))
 				],
-			}));
+			});
+
+			tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
 
 			setTimeout(function() {
-				clearTimeout(timerID);
+				clearTimeout(item._OLSKTaskTimerID);
 
 				setTimeout(function() {
-					assert.strictEqual(data.length, 0);
+					assert.strictEqual(item._OLSKTestingData.length, 0);
 
 					done();
 				}, delayForFireCount(1.5));
@@ -382,36 +375,34 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 		});
 
 		it('fires callback at second fire date', function(done) {
-			var data = [];
-
-			tasksLibrary.OLSKTasksTimeoutForTaskObject(Object.assign(taskObjectValid(data), {
+			var item = Object.assign(taskObjectValid(), {
 				OLSKTaskFireDates: [
 					new Date((new Date()).valueOf() + delayForFireCount(3)),
 					new Date((new Date()).valueOf() + delayForFireCount(4)),
 				],
-			}));
+			});
+
+			tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
 
 			setTimeout(function() {
-				assert.strictEqual(data.length, 2);
+				assert.strictEqual(item._OLSKTestingData.length, 2);
 
 				done();
 			}, delayForFireCount(4.5));
 		});
 
 		it('sets OLSKTaskStoppedAt after firing callback on the last date', function(done) {
-			var data = [];
-
-			var taskObject = Object.assign(taskObjectValid(data), {
+			var item = Object.assign(taskObjectValid(), {
 				OLSKTaskFireDates: [
 					new Date((new Date()).valueOf() + delayForFireCount(3)),
-					// new Date((new Date()).valueOf() + delayForFireCount(4))
+					new Date((new Date()).valueOf() + delayForFireCount(4))
 				],
 			});
 
-			tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject)
+			tasksLibrary.OLSKTasksTimeoutForTaskObject(item)
 
 			setTimeout(function() {
-				assert.strictEqual(datesEqualWithinThreshold(taskObject.OLSKTaskStoppedAt, new Date(), 15), true);
+				assert.strictEqual(datesEqualWithinThreshold(item.OLSKTaskStoppedAt, new Date(), 15), true);
 
 				done();
 			}, delayForFireCount(4.1));
