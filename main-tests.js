@@ -75,11 +75,11 @@ describe('OLSKTasksInputDataIsTaskObject', function testOLSKTasksInputDataIsTask
 		assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(taskObjectValid()), true);
 	});
 
-	context('OLSKTaskShouldFireImmediately', function() {
+	context('OLSKTaskFiresImmediately', function() {
 
 		it('returns false if not boolean', function() {
 			assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
-				OLSKTaskShouldFireImmediately: null,
+				OLSKTaskFiresImmediately: null,
 			})), false);
 		});
 
@@ -245,13 +245,13 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 		}, delayForFireCount(4.5));
 	});
 
-	context('OLSKTaskShouldFireImmediately', function() {
+	context('OLSKTaskFiresImmediately', function() {
 
 		it('fires immediately if true', function(done) {
 			var data = [];
 
 			var taskObject = Object.assign(taskObjectValid(data), {
-				OLSKTaskShouldFireImmediately: true,
+				OLSKTaskFiresImmediately: true,
 			});
 
 			tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObject);

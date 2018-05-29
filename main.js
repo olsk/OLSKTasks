@@ -45,8 +45,8 @@
 			return false;
 		}
 
-		if (inputData.OLSKTaskShouldFireImmediately !== undefined) {
-			if (typeof inputData.OLSKTaskShouldFireImmediately !== 'boolean') {
+		if (inputData.OLSKTaskFiresImmediately !== undefined) {
+			if (typeof inputData.OLSKTaskFiresImmediately !== 'boolean') {
 				return false;
 			}
 		}
@@ -112,7 +112,7 @@
 			inputData.OLSKTaskCallback();
 		};
 
-		if (inputData.OLSKTaskShouldFireImmediately === true) {
+		if (inputData.OLSKTaskFiresImmediately === true) {
 			taskParentCallback();
 		}
 
