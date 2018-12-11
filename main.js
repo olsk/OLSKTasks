@@ -105,7 +105,7 @@
 
 	//_ OLSKTasksTimeoutForTaskObject
 
-	exports.OLSKTasksTimeoutForTaskObject = function(inputData) {
+	exports.OLSKTasksTimeoutForTaskObject = function(inputData, callbackInput) {
 		if (!exports.OLSKTasksInputDataIsTaskObject(inputData)) {
 			throw new Error('OLSKErrorInputInvalid');
 		}
@@ -120,7 +120,7 @@
 
 			inputData._OLSKTaskFireCount++;
 
-			inputData.OLSKTaskCallback();
+			inputData.OLSKTaskCallback(callbackInput);
 		};
 
 		if (inputData.OLSKTaskFiresImmediately === true) {

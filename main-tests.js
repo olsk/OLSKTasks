@@ -187,6 +187,31 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 		assert.deepEqual(tasksLibrary.OLSKTasksTimeoutForTaskObject(item), item._OLSKTaskTimerID);
 	});
 
+	it('passes param2 to callback', function(done) {
+		var item = Object.assign(taskObjectValid(), {
+			OLSKTaskFiresImmediately: true,
+			OLSKTaskFireLimit: 1,
+		});
+
+		item.OLSKTaskCallback = function(input) {
+			return item._OLSKTestingData.push(input);
+		};
+
+		tasksLibrary.OLSKTasksTimeoutForTaskObject(item, 'alfa');
+
+		setTimeout(function() {
+			clearInterval(item._OLSKTaskTimerID);
+
+			setTimeout(function() {
+				assert.deepEqual(item._OLSKTestingData, [
+					'alfa',
+					]);
+
+				done();
+			}, delayForFireCount(1.5));
+		}, delayForFireCount(1.5));
+	});
+
 	it('can be stopped via clearInterval', function(done) {
 		var item = taskObjectValid();
 
