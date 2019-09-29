@@ -107,7 +107,7 @@
 
 	exports.OLSKTasksTimeoutForTaskObject = function(inputData, callbackInput) {
 		if (!exports.OLSKTasksInputDataIsTaskObject(inputData)) {
-			throw new Error('OLSKErrorInputInvalid');
+			throw new Error('OLSKErrorInputNotValid');
 		}
 
 		inputData._OLSKTaskFireCount = 0;

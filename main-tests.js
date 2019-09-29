@@ -175,7 +175,7 @@ describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskOb
 	it('throws error if not taskObject', function() {
 		assert.throws(function() {
 			tasksLibrary.OLSKTasksTimeoutForTaskObject({});
-		}, /OLSKErrorInputInvalid/);
+		}, /OLSKErrorInputNotValid/);
 	});
 
 	it('returns timerID', function() {
