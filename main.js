@@ -1,9 +1,3 @@
-/*!
- * OLSKTasks
- * Copyright(c) 2018 Rosano Coutinho
- * MIT Licensed
- */
-
 (function(global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -13,153 +7,153 @@
 
 	var kOLSKTasksEnableLogging = true;
 
-	//_ OLSKTasksInputDataIsDateObject
+	const mod = {
 
-	exports.OLSKTasksInputDataIsDateObject = function(inputData) {
-		if (!(inputData instanceof Date)) {
-			return false;
-		}
-
-		if (Number.isNaN(inputData.getTime())) {
-			return false;
-		}
-
-		return true;
-	};
-
-	//_ OLSKTasksInputDataIsTaskObject
-
-	exports.OLSKTasksInputDataIsTaskObject = function(inputData) {
-		if (typeof inputData !== 'object' || inputData === null) {
-			return false;
-		}
-
-		if (typeof inputData.OLSKTaskFireTimeInterval !== 'number') {
-			return false;
-		}
-
-		if (typeof inputData.OLSKTaskShouldBePerformed !== 'function') {
-			return false;
-		}
-
-		if (typeof inputData.OLSKTaskCallback !== 'function') {
-			return false;
-		}
-
-		if (inputData.OLSKTaskFiresImmediately !== undefined) {
-			if (typeof inputData.OLSKTaskFiresImmediately !== 'boolean') {
-				return false;
-			}
-		}
-
-		if (inputData.OLSKTaskFireDates !== undefined) {
-			if (!Array.isArray(inputData.OLSKTaskFireDates)) {
+		OLSKTasksInputDataIsDateObject (inputData) {
+			if (!(inputData instanceof Date)) {
 				return false;
 			}
 
-			if (!inputData.OLSKTaskFireDates.filter(exports.OLSKTasksInputDataIsDateObject).length) {
-				return false;
-			}
-		}
-
-		if (inputData.OLSKTaskFireLimit !== undefined) {
-			if (typeof inputData.OLSKTaskFireLimit !== 'number') {
+			if (Number.isNaN(inputData.getTime())) {
 				return false;
 			}
 
-			if (inputData.OLSKTaskFireLimit < 0) {
+			return true;
+		},
+
+		OLSKTasksInputDataIsTaskObject (inputData) {
+			if (typeof inputData !== 'object' || inputData === null) {
 				return false;
 			}
-		}
 
-		if (inputData._OLSKTaskFireCount !== undefined) {
-			if (typeof inputData._OLSKTaskFireCount !== 'number') {
+			if (typeof inputData.OLSKTaskFireTimeInterval !== 'number') {
 				return false;
 			}
 
-			if (inputData._OLSKTaskFireCount < 0) {
+			if (typeof inputData.OLSKTaskShouldBePerformed !== 'function') {
 				return false;
 			}
-		}
 
-		if (inputData.OLSKTaskStartedAt !== undefined) {
-			if (!exports.OLSKTasksInputDataIsDateObject(inputData.OLSKTaskStartedAt)) {
+			if (typeof inputData.OLSKTaskCallback !== 'function') {
 				return false;
 			}
-		}
 
-		if (inputData.OLSKTaskStoppedAt !== undefined) {
-			if (!exports.OLSKTasksInputDataIsDateObject(inputData.OLSKTaskStoppedAt)) {
-				return false;
-			}
-		}
-
-		if (inputData.OLSKTaskName !== undefined) {
-			if (typeof inputData.OLSKTaskName !== 'string') {
-				return false;
-			}
-		}
-
-		return true;
-	};
-
-	//_ OLSKTasksTimeoutForTaskObject
-
-	exports.OLSKTasksTimeoutForTaskObject = function(inputData, callbackInput) {
-		if (!exports.OLSKTasksInputDataIsTaskObject(inputData)) {
-			throw new Error('OLSKErrorInputNotValid');
-		}
-
-		inputData._OLSKTaskFireCount = 0;
-		inputData.OLSKTaskStartedAt = new Date();
-
-		var taskParentCallback = function() {
-			if (!inputData.OLSKTaskShouldBePerformed()) {
-				return;
+			if (inputData.OLSKTaskFiresImmediately !== undefined) {
+				if (typeof inputData.OLSKTaskFiresImmediately !== 'boolean') {
+					return false;
+				}
 			}
 
-			inputData._OLSKTaskFireCount++;
+			if (inputData.OLSKTaskFireDates !== undefined) {
+				if (!Array.isArray(inputData.OLSKTaskFireDates)) {
+					return false;
+				}
 
-			inputData.OLSKTaskCallback(callbackInput);
-		};
+				if (!inputData.OLSKTaskFireDates.filter(exports.OLSKTasksInputDataIsDateObject).length) {
+					return false;
+				}
+			}
 
-		if (inputData.OLSKTaskFiresImmediately === true) {
-			taskParentCallback();
-		}
+			if (inputData.OLSKTaskFireLimit !== undefined) {
+				if (typeof inputData.OLSKTaskFireLimit !== 'number') {
+					return false;
+				}
 
-		if (inputData.OLSKTaskFireDates) {
-			inputData._OLSKTaskFireDates = inputData.OLSKTaskFireDates.slice(0);
+				if (inputData.OLSKTaskFireLimit < 0) {
+					return false;
+				}
+			}
 
-			var timeOutCallback = function() {
-				if (!inputData._OLSKTaskFireDates.length) {
-					inputData.OLSKTaskStoppedAt = new Date();
+			if (inputData._OLSKTaskFireCount !== undefined) {
+				if (typeof inputData._OLSKTaskFireCount !== 'number') {
+					return false;
+				}
 
+				if (inputData._OLSKTaskFireCount < 0) {
+					return false;
+				}
+			}
+
+			if (inputData.OLSKTaskStartedAt !== undefined) {
+				if (!exports.OLSKTasksInputDataIsDateObject(inputData.OLSKTaskStartedAt)) {
+					return false;
+				}
+			}
+
+			if (inputData.OLSKTaskStoppedAt !== undefined) {
+				if (!exports.OLSKTasksInputDataIsDateObject(inputData.OLSKTaskStoppedAt)) {
+					return false;
+				}
+			}
+
+			if (inputData.OLSKTaskName !== undefined) {
+				if (typeof inputData.OLSKTaskName !== 'string') {
+					return false;
+				}
+			}
+
+			return true;
+		},
+
+		OLSKTasksTimeoutForTaskObject (inputData, callbackInput) {
+			if (!exports.OLSKTasksInputDataIsTaskObject(inputData)) {
+				throw new Error('OLSKErrorInputNotValid');
+			}
+
+			inputData._OLSKTaskFireCount = 0;
+			inputData.OLSKTaskStartedAt = new Date();
+
+			var taskParentCallback = function() {
+				if (!inputData.OLSKTaskShouldBePerformed()) {
 					return;
 				}
 
-				inputData._OLSKTaskTimerID = setTimeout(function() {
-					taskParentCallback();
+				inputData._OLSKTaskFireCount++;
 
-					timeOutCallback();
-				}, inputData._OLSKTaskFireDates.shift() - new Date());
-
-				return inputData._OLSKTaskTimerID;
+				inputData.OLSKTaskCallback(callbackInput);
 			};
 
-			return timeOutCallback();
-		}
-
-		inputData._OLSKTaskTimerID = setInterval(function() {
-			if (inputData._OLSKTaskFireCount >= inputData.OLSKTaskFireLimit) {
-				inputData.OLSKTaskStoppedAt = new Date();
-				return clearInterval(inputData._OLSKTaskTimerID);
+			if (inputData.OLSKTaskFiresImmediately === true) {
+				taskParentCallback();
 			}
 
-			taskParentCallback();
-		}, inputData.OLSKTaskFireTimeInterval * 1000);
+			if (inputData.OLSKTaskFireDates) {
+				inputData._OLSKTaskFireDates = inputData.OLSKTaskFireDates.slice(0);
 
-		return inputData._OLSKTaskTimerID;
+				var timeOutCallback = function() {
+					if (!inputData._OLSKTaskFireDates.length) {
+						inputData.OLSKTaskStoppedAt = new Date();
+
+						return;
+					}
+
+					inputData._OLSKTaskTimerID = setTimeout(function() {
+						taskParentCallback();
+
+						timeOutCallback();
+					}, inputData._OLSKTaskFireDates.shift() - new Date());
+
+					return inputData._OLSKTaskTimerID;
+				};
+
+				return timeOutCallback();
+			}
+
+			inputData._OLSKTaskTimerID = setInterval(function() {
+				if (inputData._OLSKTaskFireCount >= inputData.OLSKTaskFireLimit) {
+					inputData.OLSKTaskStoppedAt = new Date();
+					return clearInterval(inputData._OLSKTaskTimerID);
+				}
+
+				taskParentCallback();
+			}, inputData.OLSKTaskFireTimeInterval * 1000);
+
+			return inputData._OLSKTaskTimerID;
+		},
+
 	};
+
+	Object.assign(exports, mod);
 
 	Object.defineProperty(exports, '__esModule', {
 		value: true
