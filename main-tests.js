@@ -30,7 +30,7 @@ var datesEqualWithinThreshold = function(date1, date2, threshold) {
 	return Math.max(Math.abs(date1 - date2), threshold) === threshold;
 };
 
-describe('OLSKTasksInputDataIsDateObject', function testOLSKTasksInputDataIsDateObject() {
+describe('OLSKTasksInputDataIsDateObject', function test_OLSKTasksInputDataIsDateObject() {
 
 	it('returns false if not date', function() {
 		assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsDateObject(null), false);
@@ -46,7 +46,7 @@ describe('OLSKTasksInputDataIsDateObject', function testOLSKTasksInputDataIsDate
 
 });
 
-describe('OLSKTasksInputDataIsTaskObject', function testOLSKTasksInputDataIsTaskObject() {
+describe('OLSKTasksInputDataIsTaskObject', function test_OLSKTasksInputDataIsTaskObject() {
 
 	it('returns false if not object', function() {
 		assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(null), false);
@@ -170,7 +170,7 @@ describe('OLSKTasksInputDataIsTaskObject', function testOLSKTasksInputDataIsTask
 
 });
 
-describe('OLSKTasksTimeoutForTaskObject', function testOLSKTasksTimeoutForTaskObject() {
+describe('OLSKTasksTimeoutForTaskObject', function test_OLSKTasksTimeoutForTaskObject() {
 
 	it('throws error if not taskObject', function() {
 		assert.throws(function() {
