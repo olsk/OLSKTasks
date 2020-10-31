@@ -49,7 +49,7 @@
 					return false;
 				}
 
-				if (!inputData.OLSKTaskFireDates.filter(exports.OLSKTasksInputDataIsDateObject).length) {
+				if (!inputData.OLSKTaskFireDates.filter(mod.OLSKTasksInputDataIsDateObject).length) {
 					return false;
 				}
 			}
@@ -75,13 +75,13 @@
 			}
 
 			if (inputData.OLSKTaskStartedAt !== undefined) {
-				if (!exports.OLSKTasksInputDataIsDateObject(inputData.OLSKTaskStartedAt)) {
+				if (!mod.OLSKTasksInputDataIsDateObject(inputData.OLSKTaskStartedAt)) {
 					return false;
 				}
 			}
 
 			if (inputData.OLSKTaskStoppedAt !== undefined) {
-				if (!exports.OLSKTasksInputDataIsDateObject(inputData.OLSKTaskStoppedAt)) {
+				if (!mod.OLSKTasksInputDataIsDateObject(inputData.OLSKTaskStoppedAt)) {
 					return false;
 				}
 			}
@@ -96,7 +96,7 @@
 		},
 
 		OLSKTasksTimeoutForTaskObject (inputData, callbackInput) {
-			if (!exports.OLSKTasksInputDataIsTaskObject(inputData)) {
+			if (!mod.OLSKTasksInputDataIsTaskObject(inputData)) {
 				throw new Error('OLSKErrorInputNotValid');
 			}
 
