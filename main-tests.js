@@ -1,12 +1,6 @@
-/*!
- * OLSKTasks
- * Copyright(c) 2018 Rosano Coutinho
- * MIT Licensed
- */
+const { throws, deepEqual } = require('assert');
 
-var assert = require('assert');
-
-var tasksLibrary = require('./main');
+const mod = require('./main.js');
 
 var kDefaultTimeInterval = 0.01;
 var taskObjectValid = function() {
@@ -33,15 +27,15 @@ var datesEqualWithinThreshold = function(date1, date2, threshold) {
 describe('OLSKTasksInputDataIsDateObject', function test_OLSKTasksInputDataIsDateObject() {
 
 	it('returns false if not date', function() {
-		assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsDateObject(null), false);
+		deepEqual(mod.OLSKTasksInputDataIsDateObject(null), false);
 	});
 
 	it('returns false if getTime NaN', function() {
-		assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsDateObject(new Date('abcd')), false);
+		deepEqual(mod.OLSKTasksInputDataIsDateObject(new Date('abcd')), false);
 	});
 
 	it('returns true', function() {
-		assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsDateObject(new Date()), true);
+		deepEqual(mod.OLSKTasksInputDataIsDateObject(new Date()), true);
 	});
 
 });
@@ -49,35 +43,35 @@ describe('OLSKTasksInputDataIsDateObject', function test_OLSKTasksInputDataIsDat
 describe('OLSKTasksInputDataIsTaskObject', function test_OLSKTasksInputDataIsTaskObject() {
 
 	it('returns false if not object', function() {
-		assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(null), false);
+		deepEqual(mod.OLSKTasksInputDataIsTaskObject(null), false);
 	});
 
 	it('returns false if OLSKTaskFireTimeInterval not number', function() {
-		assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
+		deepEqual(mod.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
 			OLSKTaskFireTimeInterval: '1',
 		})), false);
 	});
 
 	it('returns false if OLSKTaskShouldBePerformed not function', function() {
-		assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
+		deepEqual(mod.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
 			OLSKTaskShouldBePerformed: true,
 		})), false);
 	});
 
 	it('returns false if OLSKTaskCallback not function', function() {
-		assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
+		deepEqual(mod.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
 			OLSKTaskCallback: true,
 		})), false);
 	});
 
 	it('returns true if valid taskObject', function() {
-		assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(taskObjectValid()), true);
+		deepEqual(mod.OLSKTasksInputDataIsTaskObject(taskObjectValid()), true);
 	});
 
 	context('OLSKTaskFiresImmediately', function() {
 
 		it('returns false if not boolean', function() {
-			assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
+			deepEqual(mod.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
 				OLSKTaskFiresImmediately: null,
 			})), false);
 		});
@@ -87,13 +81,13 @@ describe('OLSKTasksInputDataIsTaskObject', function test_OLSKTasksInputDataIsTas
 	context('OLSKTaskFireLimit', function() {
 
 		it('returns false if not number', function() {
-			assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
+			deepEqual(mod.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
 				OLSKTaskFireLimit: '1',
 			})), false);
 		});
 
 		it('returns false if below 0', function() {
-			assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
+			deepEqual(mod.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
 				OLSKTaskFireLimit: -1,
 			})), false);
 		});
@@ -103,19 +97,19 @@ describe('OLSKTasksInputDataIsTaskObject', function test_OLSKTasksInputDataIsTas
 	context('OLSKTaskFireDates', function() {
 
 		it('returns false if not array', function() {
-			assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
+			deepEqual(mod.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
 				OLSKTaskFireDates: null,
 			})), false);
 		});
 
 		it('returns false if array without dates', function() {
-			assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
+			deepEqual(mod.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
 				OLSKTaskFireDates: [null],
 			})), false);
 		});
 
 		it('returns true', function() {
-			assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
+			deepEqual(mod.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
 				OLSKTaskFireDates: [new Date()],
 			})), true);
 		});
@@ -125,13 +119,13 @@ describe('OLSKTasksInputDataIsTaskObject', function test_OLSKTasksInputDataIsTas
 	context('_OLSKTaskFireCount', function() {
 
 		it('returns false if not number', function() {
-			assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
+			deepEqual(mod.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
 				_OLSKTaskFireCount: '1',
 			})), false);
 		});
 
 		it('returns false if below 0', function() {
-			assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
+			deepEqual(mod.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
 				_OLSKTaskFireCount: -1,
 			})), false);
 		});
@@ -141,7 +135,7 @@ describe('OLSKTasksInputDataIsTaskObject', function test_OLSKTasksInputDataIsTas
 	context('OLSKTaskStartedAt', function() {
 
 		it('returns false if not date', function() {
-			assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
+			deepEqual(mod.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
 				OLSKTaskStartedAt: null,
 			})), false);
 		});
@@ -151,7 +145,7 @@ describe('OLSKTasksInputDataIsTaskObject', function test_OLSKTasksInputDataIsTas
 	context('OLSKTaskStoppedAt', function() {
 
 		it('returns false if not date', function() {
-			assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
+			deepEqual(mod.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
 				OLSKTaskStoppedAt: null,
 			})), false);
 		});
@@ -161,7 +155,7 @@ describe('OLSKTasksInputDataIsTaskObject', function test_OLSKTasksInputDataIsTas
 	context('OLSKTaskName', function() {
 
 		it('returns false if not string', function() {
-			assert.strictEqual(tasksLibrary.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
+			deepEqual(mod.OLSKTasksInputDataIsTaskObject(Object.assign(taskObjectValid(), {
 				OLSKTaskName: null,
 			})), false);
 		});
@@ -173,18 +167,18 @@ describe('OLSKTasksInputDataIsTaskObject', function test_OLSKTasksInputDataIsTas
 describe('OLSKTasksTimeoutForTaskObject', function test_OLSKTasksTimeoutForTaskObject() {
 
 	it('throws error if not taskObject', function() {
-		assert.throws(function() {
-			tasksLibrary.OLSKTasksTimeoutForTaskObject({});
+		throws(function() {
+			mod.OLSKTasksTimeoutForTaskObject({});
 		}, /OLSKErrorInputNotValid/);
 	});
 
 	it('returns timerID', function() {
-		assert.strictEqual(tasksLibrary.OLSKTasksTimeoutForTaskObject(taskObjectValid()).constructor.name, 'Timeout');
+		deepEqual(mod.OLSKTasksTimeoutForTaskObject(taskObjectValid()).constructor.name, 'Timeout');
 	});
 
 	it('sets _OLSKTaskTimerID to timerID', function() {
 		var item = taskObjectValid();
-		assert.deepEqual(tasksLibrary.OLSKTasksTimeoutForTaskObject(item), item._OLSKTaskTimerID);
+		deepEqual(mod.OLSKTasksTimeoutForTaskObject(item), item._OLSKTaskTimerID);
 	});
 
 	it('passes param2 to callback', function(done) {
@@ -197,13 +191,13 @@ describe('OLSKTasksTimeoutForTaskObject', function test_OLSKTasksTimeoutForTaskO
 			return item._OLSKTestingData.push(input);
 		};
 
-		tasksLibrary.OLSKTasksTimeoutForTaskObject(item, 'alfa');
+		mod.OLSKTasksTimeoutForTaskObject(item, 'alfa');
 
 		setTimeout(function() {
 			clearInterval(item._OLSKTaskTimerID);
 
 			setTimeout(function() {
-				assert.deepEqual(item._OLSKTestingData, [
+				deepEqual(item._OLSKTestingData, [
 					'alfa',
 					]);
 
@@ -215,13 +209,13 @@ describe('OLSKTasksTimeoutForTaskObject', function test_OLSKTasksTimeoutForTaskO
 	it('can be stopped via clearInterval', function(done) {
 		var item = taskObjectValid();
 
-		tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
+		mod.OLSKTasksTimeoutForTaskObject(item);
 
 		setTimeout(function() {
 			clearInterval(item._OLSKTaskTimerID);
 
 			setTimeout(function() {
-				assert.strictEqual(item._OLSKTestingData.length, 1);
+				deepEqual(item._OLSKTestingData.length, 1);
 
 				done();
 			}, delayForFireCount(1.5));
@@ -231,12 +225,12 @@ describe('OLSKTasksTimeoutForTaskObject', function test_OLSKTasksTimeoutForTaskO
 	it('fires callback at OLSKTaskFireInterval', function(done) {
 		var item = taskObjectValid();
 
-		tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
+		mod.OLSKTasksTimeoutForTaskObject(item);
 
 		setTimeout(function() {
 			clearInterval(item._OLSKTaskTimerID);
 
-			assert.strictEqual(item._OLSKTestingData.length, 2);
+			deepEqual(item._OLSKTestingData.length, 2);
 
 			done();
 		}, delayForFireCount(2.5));
@@ -249,12 +243,12 @@ describe('OLSKTasksTimeoutForTaskObject', function test_OLSKTasksTimeoutForTaskO
 			},
 		});
 
-		tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
+		mod.OLSKTasksTimeoutForTaskObject(item);
 
 		setTimeout(function() {
 			clearInterval(item._OLSKTaskTimerID);
 
-			assert.strictEqual(item._OLSKTestingData.length, 0);
+			deepEqual(item._OLSKTestingData.length, 0);
 
 			done();
 		}, delayForFireCount(2.5));
@@ -263,12 +257,12 @@ describe('OLSKTasksTimeoutForTaskObject', function test_OLSKTasksTimeoutForTaskO
 	it('increments _OLSKTaskFireCount after each callback fired', function(done) {
 		var item = taskObjectValid();
 
-		tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
+		mod.OLSKTasksTimeoutForTaskObject(item);
 
 		setTimeout(function() {
 			clearInterval(item._OLSKTaskTimerID);
 
-			assert.strictEqual(item._OLSKTaskFireCount, 4);
+			deepEqual(item._OLSKTaskFireCount, 4);
 
 			done();
 		}, delayForFireCount(4.7));
@@ -278,12 +272,12 @@ describe('OLSKTasksTimeoutForTaskObject', function test_OLSKTasksTimeoutForTaskO
 		var item = taskObjectValid();
 
 		var startDate = new Date();
-		tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
+		mod.OLSKTasksTimeoutForTaskObject(item);
 
 		setTimeout(function() {
 			clearInterval(item._OLSKTaskTimerID);
 
-			assert.strictEqual(datesEqualWithinThreshold(item.OLSKTaskStartedAt, startDate, 15), true);
+			deepEqual(datesEqualWithinThreshold(item.OLSKTaskStartedAt, startDate, 15), true);
 
 			done();
 		}, delayForFireCount(4.5));
@@ -296,12 +290,12 @@ describe('OLSKTasksTimeoutForTaskObject', function test_OLSKTasksTimeoutForTaskO
 				OLSKTaskFiresImmediately: true,
 			});
 
-			tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
+			mod.OLSKTasksTimeoutForTaskObject(item);
 
 			setTimeout(function() {
 				clearInterval(item._OLSKTaskTimerID);
 
-				assert.strictEqual(item._OLSKTestingData.length, 3);
+				deepEqual(item._OLSKTestingData.length, 3);
 
 				done();
 			}, delayForFireCount(2.5));
@@ -316,12 +310,12 @@ describe('OLSKTasksTimeoutForTaskObject', function test_OLSKTasksTimeoutForTaskO
 				OLSKTaskFireLimit: 3,
 			});
 
-			tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
+			mod.OLSKTasksTimeoutForTaskObject(item);
 
 			setTimeout(function() {
 				clearInterval(item._OLSKTaskTimerID);
 
-				assert.strictEqual(item._OLSKTestingData.length, 3);
+				deepEqual(item._OLSKTestingData.length, 3);
 
 				done();
 			}, delayForFireCount(4.5));
@@ -332,12 +326,12 @@ describe('OLSKTasksTimeoutForTaskObject', function test_OLSKTasksTimeoutForTaskO
 				OLSKTaskFireLimit: 3,
 			});
 
-			tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
+			mod.OLSKTasksTimeoutForTaskObject(item);
 
 			setTimeout(function() {
 				clearInterval(item._OLSKTaskTimerID);
 
-				assert.strictEqual(datesEqualWithinThreshold(item.OLSKTaskStoppedAt, new Date(), 15), true);
+				deepEqual(datesEqualWithinThreshold(item.OLSKTaskStoppedAt, new Date(), 15), true);
 
 				done();
 			}, delayForFireCount(5));
@@ -354,10 +348,10 @@ describe('OLSKTasksTimeoutForTaskObject', function test_OLSKTasksTimeoutForTaskO
 				],
 			});
 
-			tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
+			mod.OLSKTasksTimeoutForTaskObject(item);
 
 			setTimeout(function() {
-				assert.strictEqual(item._OLSKTestingData.length, 0);
+				deepEqual(item._OLSKTestingData.length, 0);
 
 				done();
 			}, delayForFireCount(2.5));
@@ -370,10 +364,10 @@ describe('OLSKTasksTimeoutForTaskObject', function test_OLSKTasksTimeoutForTaskO
 				],
 			});
 
-			tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
+			mod.OLSKTasksTimeoutForTaskObject(item);
 
 			setTimeout(function() {
-				assert.strictEqual(item._OLSKTestingData.length, 1);
+				deepEqual(item._OLSKTestingData.length, 1);
 
 				done();
 			}, delayForFireCount(3.5));
@@ -386,13 +380,13 @@ describe('OLSKTasksTimeoutForTaskObject', function test_OLSKTasksTimeoutForTaskO
 				],
 			});
 
-			tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
+			mod.OLSKTasksTimeoutForTaskObject(item);
 
 			setTimeout(function() {
 				clearTimeout(item._OLSKTaskTimerID);
 
 				setTimeout(function() {
-					assert.strictEqual(item._OLSKTestingData.length, 0);
+					deepEqual(item._OLSKTestingData.length, 0);
 
 					done();
 				}, delayForFireCount(1.5));
@@ -407,10 +401,10 @@ describe('OLSKTasksTimeoutForTaskObject', function test_OLSKTasksTimeoutForTaskO
 				],
 			});
 
-			tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
+			mod.OLSKTasksTimeoutForTaskObject(item);
 
 			setTimeout(function() {
-				assert.strictEqual(item._OLSKTestingData.length, 2);
+				deepEqual(item._OLSKTestingData.length, 2);
 
 				done();
 			}, delayForFireCount(4.5));
@@ -424,10 +418,10 @@ describe('OLSKTasksTimeoutForTaskObject', function test_OLSKTasksTimeoutForTaskO
 				],
 			});
 
-			tasksLibrary.OLSKTasksTimeoutForTaskObject(item);
+			mod.OLSKTasksTimeoutForTaskObject(item);
 
 			setTimeout(function() {
-				assert.strictEqual(datesEqualWithinThreshold(item.OLSKTaskStoppedAt, new Date(), 15), true);
+				deepEqual(datesEqualWithinThreshold(item.OLSKTaskStoppedAt, new Date(), 15), true);
 
 				done();
 			}, delayForFireCount(4.2));
