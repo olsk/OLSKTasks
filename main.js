@@ -5,8 +5,6 @@
 }(this, (function(exports) {
 	'use strict';
 
-	var kOLSKTasksEnableLogging = true;
-
 	const mod = {
 
 		OLSKTasksInputDataIsDateObject (inputData) {
